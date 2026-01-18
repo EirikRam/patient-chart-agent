@@ -20,11 +20,10 @@ def main() -> int:
     chart = normalize_to_patient_chart(grouped)
 
     risks = run_risk_rules(chart)
-    if not risks:
-        print("0 risks found")
-        return 0
-
+    print(f"patient_id: {chart.patient_id}")
     print(f"total risks found: {len(risks)}")
+    if not risks:
+        return 0
     for risk in risks:
         rule_id = risk.get("rule_id", "unknown")
         severity = risk.get("severity", "medium")

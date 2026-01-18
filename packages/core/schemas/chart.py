@@ -56,12 +56,15 @@ class Observation(BaseModel):
     """Labs or vitals."""
     id: str
     code: Optional[str] = None
+    code_system: Optional[str] = None
     display: Optional[str] = None
     value: Optional[float] = None
     value_text: Optional[str] = None
     unit: Optional[str] = None
     effective: Optional[datetime] = None
+    effective_dt: Optional[datetime] = None
     category: Optional[str] = None  # "lab" or "vital" (or None)
+    components: List[Dict[str, Any]] = Field(default_factory=list)
     sources: List[SourceRef] = Field(default_factory=list)
 
 

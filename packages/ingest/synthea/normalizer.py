@@ -49,6 +49,20 @@ def _code_display(codeable: Any) -> tuple[Optional[str], Optional[str]]:
     return code or text, display or text
 
 
+def _select_coding(codeable: Any, prefer: str) -> Optional[dict]:
+    if not isinstance(codeable, dict):
+        return None
+    codings = codeable.get("coding")
+    if not isinstance(codings, list):
+        return None
+    prefer_lower = prefer.lower()
+    for coding in codings:
+        system = coding.get("system")
+        if isinstance(system, str) and prefer_lower in system.lower():
+            return coding
+    return _first_item(codings)
+
+
 def _string_value(value: Any) -> Optional[str]:
     return value if isinstance(value, str) and value else None
 
@@ -157,8 +171,13 @@ def normalize_to_patient_chart(grouped: dict[str, list[dict]]) -> PatientChart:
     observations = []
     for item in grouped.get("Observation", []):
         resource, file_path = _resource_with_path(item)
-        code, display = _code_display(resource.get("code"))
+        codeable = resource.get("code")
+        coding = _select_coding(codeable, "loinc")
+        code, display = _code_display(codeable)
         value_qty = resource.get("valueQuantity") or {}
+        code_system = None
+        if isinstance(coding, dict):
+            code_system = _string_value(coding.get("system"))
         category = None
         category_concept = _first_item(resource.get("category"))
         if category_concept:
@@ -167,16 +186,41 @@ def normalize_to_patient_chart(grouped: dict[str, list[dict]]) -> PatientChart:
                 category = category_coding.get("code") or category_coding.get("display")
             if not category:
                 category = _string_value(category_concept.get("text"))
+        effective_dt = _parse_datetime(resource.get("effectiveDateTime"))
+        components = []
+        for component in resource.get("component", []) or []:
+            if not isinstance(component, dict):
+                continue
+            comp_codeable = component.get("code")
+            comp_coding = _select_coding(comp_codeable, "loinc")
+            comp_code, comp_display = _code_display(comp_codeable)
+            comp_value = component.get("valueQuantity") or {}
+            comp_code_system = None
+            if isinstance(comp_coding, dict):
+                comp_code_system = _string_value(comp_coding.get("system"))
+            components.append(
+                {
+                    "code": comp_code,
+                    "code_system": comp_code_system,
+                    "display": comp_display,
+                    "value": _float_value(comp_value.get("value")),
+                    "unit": _string_value(comp_value.get("unit")),
+                }
+            )
+
         observations.append(
             Observation(
                 id=_string_value(resource.get("id")) or "",
                 code=code,
+                code_system=code_system,
                 display=display,
                 value=_float_value(value_qty.get("value")),
                 value_text=_string_value(resource.get("valueString")),
                 unit=_string_value(value_qty.get("unit")),
-                effective=_parse_datetime(resource.get("effectiveDateTime")),
+                effective=effective_dt,
+                effective_dt=effective_dt,
                 category=_string_value(category),
+                components=components,
                 sources=[_source_ref(resource, file_path)],
             )
         )

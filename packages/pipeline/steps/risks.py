@@ -1,33 +1,12 @@
 from __future__ import annotations
 
+import importlib
 from typing import Callable
 
 from packages.core.schemas.chart import PatientChart, SourceRef
-from packages.risklib.rules import (
-    duplicate_therapy,
-    followup_missing,
-    lab_trend_creatinine,
-    lab_trend_potassium,
-    med_allergy_conflict,
-)
-
-_RULE_MODULES = [
-    duplicate_therapy,
-    followup_missing,
-    lab_trend_creatinine,
-    lab_trend_potassium,
-    med_allergy_conflict,
-]
+from packages.risklib.rules import discover_rules
 
 _SEVERITIES = {"low", "medium", "high"}
-
-
-def _get_runner(module: object) -> Callable[[PatientChart], object] | None:
-    for name in ("run", "evaluate", "check", "detect"):
-        candidate = getattr(module, name, None)
-        if callable(candidate):
-            return candidate
-    return None
 
 
 def _as_sourceref(value: object) -> SourceRef | None:
@@ -45,7 +24,7 @@ def _as_sourceref(value: object) -> SourceRef | None:
     return None
 
 
-def _normalize_results(module: object, raw: object) -> list[dict]:
+def _normalize_results(default_rule_id: str, default_severity: str, raw: object) -> list[dict]:
     if raw is None:
         return []
     if isinstance(raw, dict):
@@ -56,8 +35,6 @@ def _normalize_results(module: object, raw: object) -> list[dict]:
         items = [{"message": str(raw)}]
 
     results: list[dict] = []
-    default_rule_id = getattr(module, "RULE_ID", module.__name__.split(".")[-1])
-    default_severity = getattr(module, "SEVERITY", "medium")
     for item in items:
         if not isinstance(item, dict):
             item = {"message": str(item)}
@@ -84,15 +61,27 @@ def _normalize_results(module: object, raw: object) -> list[dict]:
     return results
 
 
-def run_risk_rules(chart: PatientChart) -> list[dict]:
+def run_risk_rules(chart: PatientChart, debug: bool = False) -> list[dict] | tuple[list[dict], dict]:
     results: list[dict] = []
-    for module in _RULE_MODULES:
-        runner = _get_runner(module)
-        if not runner:
-            continue
+    debug_info: dict[str, str] = {}
+    runners = discover_rules()
+    for rule_id, runner in sorted(runners.items()):
+        module = importlib.import_module(runner.__module__)
+        default_severity = getattr(module, "SEVERITY", "medium")
         try:
             raw = runner(chart)
-        except Exception:
+        except Exception as exc:
+            if debug:
+                debug_info[rule_id] = f"error: {exc}"
             continue
-        results.extend(_normalize_results(module, raw))
+        normalized = _normalize_results(rule_id, default_severity, raw)
+        if debug:
+            if normalized:
+                debug_info[rule_id] = f"executed, hits={len(normalized)}"
+            else:
+                reason = getattr(module, "LAST_DEBUG_REASON", None)
+                debug_info[rule_id] = reason or "executed, no hits"
+        results.extend(normalized)
+    if debug:
+        return results, debug_info
     return results
