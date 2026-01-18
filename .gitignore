@@ -1,0 +1,23 @@
+# venv + local env
+.venv/
+.env
+.env.*
+!.env.example
+
+# python noise
+__pycache__/
+*.pyc
+
+# build artifacts
+*.egg-info/
+dist/
+build/
+
+# OS/editor noise
+.vscode/
+.DS_Store
+Thumbs.db
+
+# datasets
+data/raw/
+data/processed/
