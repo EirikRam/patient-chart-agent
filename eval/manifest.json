@@ -1,0 +1,139 @@
+{
+  "version": "phase8.1",
+  "mode": "mock",
+  "enable_agents": true,
+  "gates": {
+    "min_risk_precision": 0.0,
+    "min_risk_recall": 1.0,
+    "min_missing_precision": 0.0,
+    "min_missing_recall": 1.0,
+    "min_contradiction_precision": 0.0,
+    "min_contradiction_recall": 1.0,
+    "min_narrative_citation_coverage": 0.0,
+    "min_risk_citation_coverage": 1.0,
+    "min_timeline_citation_coverage": 1.0,
+    "min_contradiction_citation_coverage": 1.0
+  },
+  "patients": [
+    {
+      "name": "Berna338",
+      "path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+      "expects": {
+        "risks": ["lab_a1c_elevated", "lab_trend_potassium", "vitals_bmi_obesity"],
+        "missing_info_ids": [],
+        "contradiction_ids": ["conflicting_condition_onset"],
+        "allow_extra_risks": true,
+        "allow_extra_missing_info": true,
+        "allow_extra_contradictions": true
+      }
+    },
+    {
+      "name": "Kris249",
+      "path": "data/raw/fhir_ehr_synthea/samples_100/Kris249_Moore224_45dff467-def6-2132-a03a-5950e203b5c8.json",
+      "expects": {
+        "risks": [],
+        "missing_info_ids": [],
+        "contradiction_ids": [],
+        "allow_extra_risks": true,
+        "allow_extra_missing_info": true,
+        "allow_extra_contradictions": true
+      }
+    },
+    {
+      "name": "Adela471",
+      "path": "data/raw/fhir_ehr_synthea/samples_100/Adela471_Danica886_Schmitt836_0c1a1859-29c7-4f11-f21c-20a7099e8613.json",
+      "expects": {
+        "risks": [],
+        "missing_info_ids": [],
+        "contradiction_ids": [],
+        "allow_extra_risks": true,
+        "allow_extra_missing_info": true,
+        "allow_extra_contradictions": true
+      }
+    },
+    {
+      "name": "Adriana394",
+      "path": "data/raw/fhir_ehr_synthea/samples_100/Adriana394_Almaraz628_d00420ac-9a07-66dc-ee93-d2e3e9bbf23e.json",
+      "expects": {
+        "risks": [],
+        "missing_info_ids": [],
+        "contradiction_ids": [],
+        "allow_extra_risks": true,
+        "allow_extra_missing_info": true,
+        "allow_extra_contradictions": true
+      }
+    },
+    {
+      "name": "Alfonzo975",
+      "path": "data/raw/fhir_ehr_synthea/samples_100/Alfonzo975_Casper496_fb62c08e-8900-5fb2-8a98-af95f64125ff.json",
+      "expects": {
+        "risks": [],
+        "missing_info_ids": [],
+        "contradiction_ids": [],
+        "allow_extra_risks": true,
+        "allow_extra_missing_info": true,
+        "allow_extra_contradictions": true
+      }
+    },
+    {
+      "name": "Amado512",
+      "path": "data/raw/fhir_ehr_synthea/samples_100/Amado512_Raynor401_258041a6-bcb2-807e-65ee-c3e45e908d0b.json",
+      "expects": {
+        "risks": [],
+        "missing_info_ids": [],
+        "contradiction_ids": [],
+        "allow_extra_risks": true,
+        "allow_extra_missing_info": true,
+        "allow_extra_contradictions": true
+      }
+    },
+    {
+      "name": "Andrew29",
+      "path": "data/raw/fhir_ehr_synthea/samples_100/Andrew29_Bode78_922118ba-e9c1-e63d-c63c-1ea0d8e73b40.json",
+      "expects": {
+        "risks": [],
+        "missing_info_ids": [],
+        "contradiction_ids": [],
+        "allow_extra_risks": true,
+        "allow_extra_missing_info": true,
+        "allow_extra_contradictions": true
+      }
+    },
+    {
+      "name": "Annemarie794",
+      "path": "data/raw/fhir_ehr_synthea/samples_100/Annemarie794_Layne115_Langosh790_3bd657bd-51e4-a89d-300c-cc4238af6f1c.json",
+      "expects": {
+        "risks": [],
+        "missing_info_ids": [],
+        "contradiction_ids": [],
+        "allow_extra_risks": true,
+        "allow_extra_missing_info": true,
+        "allow_extra_contradictions": true
+      }
+    },
+    {
+      "name": "Arcelia945",
+      "path": "data/raw/fhir_ehr_synthea/samples_100/Arcelia945_Sam879_Wisoky380_9c867408-0359-e6e7-4eb3-19a635685828.json",
+      "expects": {
+        "risks": [],
+        "missing_info_ids": [],
+        "contradiction_ids": [],
+        "allow_extra_risks": true,
+        "allow_extra_missing_info": true,
+        "allow_extra_contradictions": true
+      }
+    },
+    {
+      "name": "Arden380",
+      "path": "data/raw/fhir_ehr_synthea/samples_100/Arden380_Johnson679_6b949035-5840-c84c-6094-66835062858a.json",
+      "expects": {
+        "risks": [],
+        "missing_info_ids": [],
+        "contradiction_ids": [],
+        "allow_extra_risks": true,
+        "allow_extra_missing_info": true,
+        "allow_extra_contradictions": true
+      }
+    }
+  ]
+}
