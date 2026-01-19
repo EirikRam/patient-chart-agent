@@ -38,6 +38,7 @@ LEGACY_ALLOWLIST = {
     Path("tests/golden/Kris249_Moore224_phase5_mock_agents.json"),
     Path("tests/golden/Berna338_Moore224_phase5_mock_agents.json"),
     Path("tests/test_filename_conventions_phase8.py"),
+    Path("tests/test_quality_gate_phase9.py"),
 }
 
 

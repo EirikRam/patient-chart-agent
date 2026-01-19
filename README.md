@@ -59,6 +59,28 @@ LLM mode requires `OPENAI_API_KEY`.
 python -m pytest -q
 ```
 
+## Quality Gate
+
+Deterministic pre-commit checks:
+
+```powershell
+python scripts/quality_gate.py
+```
+
+## CI
+
+CI runs the same quality gate command:
+
+```powershell
+python scripts/quality_gate.py
+```
+
+Local CI parity (install dev/test deps):
+
+```powershell
+python -m pip install -e ".[dev]"
+```
+
 ## Quick Demo (Windows)
 
 ```powershell
