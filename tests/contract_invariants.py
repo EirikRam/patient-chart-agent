@@ -8,6 +8,8 @@ def assert_meta_mode(payload: dict, expected_mode: str) -> None:
     assert meta.get("mode") == expected_mode
     assert isinstance(meta.get("patient_id"), str)
     assert meta.get("patient_id").strip() != ""
+    assert isinstance(meta.get("source_path"), str)
+    assert meta.get("source_path").strip() != ""
 
 
 def assert_base_shape(payload: dict) -> None:
@@ -18,6 +20,9 @@ def assert_base_shape(payload: dict) -> None:
 
 
 def assert_agents_disabled_shape(payload: dict) -> None:
+    assert "timeline" in payload
+    assert "missing_info" in payload
+    assert "contradictions" in payload
     assert payload.get("timeline") is None
     assert payload.get("missing_info") is None
     assert payload.get("contradictions") is None
@@ -27,6 +32,9 @@ def assert_agents_enabled_shape(payload: dict, *, mode: str) -> None:
     timeline = payload.get("timeline")
     missing_info = payload.get("missing_info")
     contradictions = payload.get("contradictions")
+    assert "timeline" in payload
+    assert "missing_info" in payload
+    assert "contradictions" in payload
     if mode == "mock":
         assert isinstance(timeline, list)
         assert isinstance(missing_info, list)
