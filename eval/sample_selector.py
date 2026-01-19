@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import os
 from pathlib import Path
 
 
@@ -10,10 +11,16 @@ def _selection_key(filename: str, seed: str) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+def _normalize_root(root: str | Path) -> Path:
+    if isinstance(root, str) and os.sep == "/" and "\\" in root:
+        root = root.replace("\\", "/")
+    return Path(root)
+
+
 def select_patients(data_dir: str | Path, n: int, seed: str = "phase8") -> list[str]:
     if n <= 0:
         return []
-    base_dir = Path(data_dir)
+    base_dir = _normalize_root(data_dir)
     if not base_dir.exists():
         return []
     candidates = [
