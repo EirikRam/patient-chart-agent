@@ -1,25 +1,74 @@
 from __future__ import annotations
 
+import argparse
 import sys
 from pathlib import Path
 
+from packages.core.schemas.result import PatientAnalysisResult
 from packages.ingest.synthea.loader import load_patient_dir
 from packages.ingest.synthea.normalizer import normalize_to_patient_chart
 from packages.ingest.synthea.parser import parse_fhir_resources
+from packages.pipeline.evidence_enrich import enrich_evidence
 from packages.pipeline.steps.risks import run_risk_rules
+from packages.pipeline.steps.snapshot import build_snapshot_from_chart
+
+
+def _serialize_risks(risks: list[dict]) -> list[dict]:
+    serialized = []
+    for risk in risks:
+        evidence = risk.get("evidence") or []
+        evidence_out = []
+        for source in evidence:
+            evidence_out.append(
+                {
+                    "doc_id": getattr(source, "doc_id", None),
+                    "resource_type": getattr(source, "resource_type", None),
+                    "resource_id": getattr(source, "resource_id", None),
+                    "file_path": getattr(source, "file_path", None),
+                    "timestamp": getattr(source, "timestamp", None),
+                }
+            )
+        serialized.append(
+            {
+                "rule_id": risk.get("rule_id", "unknown"),
+                "severity": risk.get("severity", "medium"),
+                "message": risk.get("message", ""),
+                "evidence": evidence_out,
+            }
+        )
+    return serialized
+
+
+def _result_to_json(result: PatientAnalysisResult) -> str:
+    if hasattr(result, "model_dump_json"):
+        return result.model_dump_json()
+    return result.json()
 
 
 def main() -> int:
-    if len(sys.argv) < 2:
-        print("Usage: python apps/worker/run_analyze.py <patient.json>", file=sys.stderr)
-        return 1
+    parser = argparse.ArgumentParser(description="Run risk analysis.")
+    parser.add_argument("path", type=Path, help="Path to patient JSON bundle.")
+    parser.add_argument("--json", action="store_true", help="Emit JSON output.")
+    args = parser.parse_args()
 
-    path = Path(sys.argv[1])
+    path = args.path
     resources = load_patient_dir(path)
     grouped = parse_fhir_resources(resources)
     chart = normalize_to_patient_chart(grouped)
 
     risks = run_risk_rules(chart)
+    if args.json:
+        enrich_evidence(risks, chart, str(path))
+        snapshot_text = build_snapshot_from_chart(chart)
+        result = PatientAnalysisResult(
+            snapshot=snapshot_text,
+            risks=_serialize_risks(risks),
+            narrative=None,
+            meta={"patient_id": chart.patient_id, "source_path": str(path), "mode": "analyze"},
+        )
+        print(_result_to_json(result))
+        return 0
+
     print(f"patient_id: {chart.patient_id}")
     print(f"total risks found: {len(risks)}")
     if not risks:
