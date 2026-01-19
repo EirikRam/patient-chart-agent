@@ -1,0 +1,32 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Patient",
+        "id": "patient-1"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-1",
+        "code": {
+          "text": "Hypertension"
+        },
+        "onsetDateTime": "2020-01-10T00:00:00Z"
+      }
+    },
+    {
+      "resource": {
+        "resourceType": "Condition",
+        "id": "cond-2",
+        "code": {
+          "text": "Hypertension"
+        },
+        "onsetDateTime": "2021-02-15T00:00:00Z"
+      }
+    }
+  ]
+}

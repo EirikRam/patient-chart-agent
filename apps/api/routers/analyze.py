@@ -8,15 +8,12 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
-from packages.core.llm import LLMClient
 from packages.core.schemas.result import PatientAnalysisResult
 from packages.ingest.synthea.loader import load_patient_dir
 from packages.ingest.synthea.normalizer import normalize_to_patient_chart
 from packages.ingest.synthea.parser import parse_fhir_resources
-from packages.pipeline.evidence_enrich import enrich_evidence
-from packages.pipeline.steps.narrative import generate_narrative
-from packages.pipeline.steps.risks import run_risk_rules
-from packages.pipeline.steps.snapshot import build_snapshot_from_chart
+from packages.pipeline.agent_pipeline import run_agent_pipeline
+from packages.pipeline.evidence_enrich import enrich_result_evidence
 
 router = APIRouter(prefix="/v1")
 
@@ -24,6 +21,7 @@ router = APIRouter(prefix="/v1")
 class AnalyzeRequest(BaseModel):
     path: str
     mode: Literal["mock", "llm"] = "mock"
+    enable_agents: bool = False
 
 
 def _serialize_risks(risks: list[dict]) -> list[dict]:
@@ -68,20 +66,13 @@ def analyze(request: AnalyzeRequest) -> JSONResponse:
         return _error(400, "invalid_input", "path must be a file", {"path": request.path})
 
     try:
+        result = run_agent_pipeline(
+            request.path, enable_agents=request.enable_agents, mode=request.mode
+        )
         resources = load_patient_dir(path)
         grouped = parse_fhir_resources(resources)
         chart = normalize_to_patient_chart(grouped)
-        snapshot_text = build_snapshot_from_chart(chart)
-        risks = run_risk_rules(chart)
-        enrich_evidence(risks, chart, request.path)
-        llm = LLMClient() if request.mode == "llm" else None
-        narrative = generate_narrative(snapshot_text, chart.patient_id, llm)
-        result = PatientAnalysisResult(
-            snapshot=snapshot_text,
-            risks=_serialize_risks(risks),
-            narrative=narrative,
-            meta={"patient_id": chart.patient_id, "source_path": request.path, "mode": request.mode},
-        )
+        enrich_result_evidence(result, chart, request.path)
         return JSONResponse(status_code=200, content=jsonable_encoder(result))
     except RuntimeError as exc:
         return _error(500, "runtime_error", str(exc))
