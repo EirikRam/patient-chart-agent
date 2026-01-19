@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel, Field
@@ -79,7 +79,7 @@ class Note(BaseModel):
 class PatientChart(BaseModel):
     """Canonical, model-friendly view of a patient's chart."""
     patient_id: str
-    created_at: datetime = Field(default_factory=datetime.utcnow)
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     demographics: Dict[str, Any] = Field(default_factory=dict)
 

@@ -49,6 +49,38 @@ def _code_display(codeable: Any) -> tuple[Optional[str], Optional[str]]:
     return code or text, display or text
 
 
+def _coding_display(codeable: Any) -> Optional[str]:
+    if not isinstance(codeable, dict):
+        return None
+    coding = _first_item(codeable.get("coding"))
+    display = coding.get("display") if coding else None
+    return display if isinstance(display, str) and display else None
+
+
+def _coding_code(codeable: Any) -> Optional[str]:
+    if not isinstance(codeable, dict):
+        return None
+    coding = _first_item(codeable.get("coding"))
+    code = coding.get("code") if coding else None
+    return code if isinstance(code, str) and code else None
+
+
+def _medication_display(resource: dict) -> Optional[str]:
+    primary_codeable = resource.get("code") if isinstance(resource.get("code"), dict) else None
+    med_codeable = (
+        resource.get("medicationCodeableConcept")
+        if isinstance(resource.get("medicationCodeableConcept"), dict)
+        else None
+    )
+    display = _coding_display(primary_codeable) or _coding_display(med_codeable)
+    if display:
+        return display
+    code = _coding_code(primary_codeable) or _coding_code(med_codeable)
+    if code:
+        return f"RxNorm:{code}"
+    return None
+
+
 def _select_coding(codeable: Any, prefer: str) -> Optional[dict]:
     if not isinstance(codeable, dict):
         return None
@@ -142,11 +174,13 @@ def normalize_to_patient_chart(grouped: dict[str, list[dict]]) -> PatientChart:
     for item in grouped.get("MedicationRequest", []):
         resource, file_path = _resource_with_path(item)
         code, display = _code_display(resource.get("medicationCodeableConcept"))
+        display = display or _medication_display(resource)
         dosage = _first_item(resource.get("dosageInstruction")) or {}
+        name = display or (f"RxNorm:{code}" if code else "Unknown medication")
         medications.append(
             Medication(
                 id=_string_value(resource.get("id")) or "",
-                name=display or code,
+                name=name,
                 status=_string_value(resource.get("status")),
                 authored_on=_parse_datetime(resource.get("authoredOn")),
                 dosage_text=_string_value(dosage.get("text")),
@@ -156,11 +190,13 @@ def normalize_to_patient_chart(grouped: dict[str, list[dict]]) -> PatientChart:
     for item in grouped.get("MedicationStatement", []):
         resource, file_path = _resource_with_path(item)
         code, display = _code_display(resource.get("medicationCodeableConcept"))
+        display = display or _medication_display(resource)
         dosage = _first_item(resource.get("dosage")) or {}
+        name = display or (f"RxNorm:{code}" if code else "Unknown medication")
         medications.append(
             Medication(
                 id=_string_value(resource.get("id")) or "",
-                name=display or code,
+                name=name,
                 status=_string_value(resource.get("status")),
                 authored_on=_parse_datetime(resource.get("effectiveDateTime")),
                 dosage_text=_string_value(dosage.get("text")),
