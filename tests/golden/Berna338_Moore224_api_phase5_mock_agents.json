@@ -1,0 +1,426 @@
+{
+  "contradictions": [
+    {
+      "evidence": [
+        {
+          "doc_id": "Condition/f4159279-94bf-1bfc-7a65-2eace274bd1b",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-7a65-2eace274bd1b",
+          "resource_type": "Condition",
+          "timestamp": null
+        },
+        {
+          "doc_id": "Condition/f4159279-94bf-1bfc-eafe-67868164be6f",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-eafe-67868164be6f",
+          "resource_type": "Condition",
+          "timestamp": null
+        }
+      ],
+      "id": "conflicting_condition_onset",
+      "message": "The condition 'Medication review due (situation)' appears multiple times in the record with conflicting onset dates.",
+      "severity": "low"
+    }
+  ],
+  "meta": {
+    "mode": "mock",
+    "patient_id": "f4159279-94bf-1bfc-701b-502b2a3131b4",
+    "source_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json"
+  },
+  "missing_info": [],
+  "narrative": {
+    "citations": {
+      "R1": [
+        "Observation/f4159279-94bf-1bfc-738a-1b98561ee983"
+      ],
+      "R2": [
+        "Observation/f4159279-94bf-1bfc-6870-6b6a0bd54532",
+        "Observation/f4159279-94bf-1bfc-da75-fd5515883836",
+        "Observation/f4159279-94bf-1bfc-4de5-6a95cf7a793f"
+      ],
+      "R3": [
+        "Observation/f4159279-94bf-1bfc-9766-b5a840e87d76"
+      ],
+      "S1": [],
+      "S10": [
+        "Observation/f4159279-94bf-1bfc-4de5-6a95cf7a793f"
+      ],
+      "S2": [],
+      "S3": [],
+      "S4": [],
+      "S5": [],
+      "S6": [],
+      "S7": [
+        "Observation/f4159279-94bf-1bfc-9e43-70896b0dfca6"
+      ],
+      "S8": [
+        "Observation/f4159279-94bf-1bfc-9766-b5a840e87d76"
+      ],
+      "S9": [
+        "Observation/f4159279-94bf-1bfc-738a-1b98561ee983"
+      ]
+    },
+    "followup_questions": [
+      "Are there symptoms related to the listed risks?"
+    ],
+    "patient_id": "f4159279-94bf-1bfc-701b-502b2a3131b4",
+    "risk_bullets": [
+      "lab_a1c_elevated | medium | A1c in prediabetes range: 5.93 % on 2025-04-18 [R1]",
+      "lab_trend_potassium | medium | potassium changed from 3.75 on 2016-02-26 to 5.08 on 2025-04-18 [R2]",
+      "vitals_bmi_obesity | medium | BMI in obesity range: 30.45 on 2025-04-18 [R3]"
+    ],
+    "summary_bullets": [
+      "Recent problem: 2025-09-13 | Viral sinusitis (disorder). [S1]",
+      "Recent problem: 2025-04-18 | Stress (finding). [S2]",
+      "Recent problem: 2025-04-18 | Medication review due (situation). [S3]",
+      "Medication: 2025-04-18 | Ibuprofen 400 MG Oral Tablet [Ibu]. [S4]",
+      "Medication: 2024-11-29 | Ibuprofen 400 MG Oral Tablet [Ibu]. [S5]",
+      "Medication: 2024-04-12 | Ibuprofen 400 MG Oral Tablet [Ibu]. [S6]",
+      "Key vital/lab: BP (85354-9): 133/74 on 2025-04-18. [S7]",
+      "Key vital/lab: BMI (39156-5): 30.45 kg/m2 on 2025-04-18. [S8]",
+      "Key vital/lab: A1c (4548-4): 5.93 % on 2025-04-18. [S9]",
+      "Key vital/lab: Potassium (6298-4): 5.08 mmol/L on 2025-04-18. [S10]"
+    ]
+  },
+  "risks": [
+    {
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-738a-1b98561ee983",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-738a-1b98561ee983",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "message": "A1c in prediabetes range: 5.93 % on 2025-04-18",
+      "rule_id": "lab_a1c_elevated",
+      "severity": "medium"
+    },
+    {
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-6870-6b6a0bd54532",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-6870-6b6a0bd54532",
+          "resource_type": "Observation",
+          "timestamp": "2016-02-26T01:52:09Z"
+        },
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-da75-fd5515883836",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-da75-fd5515883836",
+          "resource_type": "Observation",
+          "timestamp": "2024-11-29T01:52:09Z"
+        },
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-4de5-6a95cf7a793f",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-4de5-6a95cf7a793f",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "message": "potassium changed from 3.75 on 2016-02-26 to 5.08 on 2025-04-18",
+      "rule_id": "lab_trend_potassium",
+      "severity": "medium"
+    },
+    {
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-9766-b5a840e87d76",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-9766-b5a840e87d76",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "message": "BMI in obesity range: 30.45 on 2025-04-18",
+      "rule_id": "vitals_bmi_obesity",
+      "severity": "medium"
+    }
+  ],
+  "snapshot": "Patient: f4159279-94bf-1bfc-701b-502b2a3131b4 | sex=female | age=52 | last_seen=2025-09-13\nRecent problems:\n2025-09-13 | Viral sinusitis (disorder)\n2025-04-18 | Stress (finding)\n2025-04-18 | Medication review due (situation)\n2024-11-29 | Viral sinusitis (disorder)\n2024-11-29 | Full-time employment (finding)\nMedications:\n2025-04-18 | Ibuprofen 400 MG Oral Tablet [Ibu]\n2024-11-29 | Ibuprofen 400 MG Oral Tablet [Ibu]\n2024-04-12 | Ibuprofen 400 MG Oral Tablet [Ibu]\n2023-04-07 | Ibuprofen 400 MG Oral Tablet [Ibu]\n2022-04-15 | Unknown medication\n2022-04-01 | Ibuprofen 400 MG Oral Tablet [Ibu]\n2021-03-26 | Ibuprofen 400 MG Oral Tablet [Ibu]\n2020-03-20 | Ibuprofen 400 MG Oral Tablet [Ibu]\nKey vitals/labs:\nBP (85354-9): 133/74 on 2025-04-18 | src: Observation/f4159279-94bf-1bfc-9e43-70896b0dfca6\nBMI (39156-5): 30.45 kg/m2 on 2025-04-18 | src: Observation/f4159279-94bf-1bfc-9766-b5a840e87d76\nA1c (4548-4): 5.93 % on 2025-04-18 | src: Observation/f4159279-94bf-1bfc-738a-1b98561ee983\nPotassium (6298-4): 5.08 mmol/L on 2025-04-18 | src: Observation/f4159279-94bf-1bfc-4de5-6a95cf7a793f\nRisks:\nlab_a1c_elevated | medium | A1c in prediabetes range: 5.93 % on 2025-04-18\n  - src: Observation/f4159279-94bf-1bfc-738a-1b98561ee983\nlab_trend_potassium | medium | potassium changed from 3.75 on 2016-02-26 to 5.08 on 2025-04-18\n  - src: Observation/f4159279-94bf-1bfc-6870-6b6a0bd54532\n  - src: Observation/f4159279-94bf-1bfc-da75-fd5515883836\n  - src: Observation/f4159279-94bf-1bfc-4de5-6a95cf7a793f\nvitals_bmi_obesity | medium | BMI in obesity range: 30.45 on 2025-04-18\n  - src: Observation/f4159279-94bf-1bfc-9766-b5a840e87d76",
+  "timeline": [
+    {
+      "date": "2025-09-13T03:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Encounter/f4159279-94bf-1bfc-47f6-b000c92fe3c1",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-47f6-b000c92fe3c1",
+          "resource_type": "Encounter",
+          "timestamp": null
+        }
+      ],
+      "summary": "Encounter for symptom (procedure) recorded",
+      "type": "ENCOUNTER"
+    },
+    {
+      "date": "2025-08-04T16:08:57+00:00",
+      "evidence": [
+        {
+          "doc_id": "Encounter/f4159279-94bf-1bfc-55e8-3789535f2642",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-55e8-3789535f2642",
+          "resource_type": "Encounter",
+          "timestamp": null
+        }
+      ],
+      "summary": "Encounter for problem (procedure) recorded",
+      "type": "ENCOUNTER"
+    },
+    {
+      "date": "2025-07-05T14:44:45+00:00",
+      "evidence": [
+        {
+          "doc_id": "Encounter/f4159279-94bf-1bfc-0258-feeb752f41da",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-0258-feeb752f41da",
+          "resource_type": "Encounter",
+          "timestamp": null
+        }
+      ],
+      "summary": "Encounter for problem (procedure) recorded",
+      "type": "ENCOUNTER"
+    },
+    {
+      "date": "2025-06-05T13:33:02+00:00",
+      "evidence": [
+        {
+          "doc_id": "Encounter/f4159279-94bf-1bfc-64b4-b1e994e70918",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-64b4-b1e994e70918",
+          "resource_type": "Encounter",
+          "timestamp": null
+        }
+      ],
+      "summary": "Encounter for problem (procedure) recorded",
+      "type": "ENCOUNTER"
+    },
+    {
+      "date": "2025-04-18T03:25:24+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-cf3d-0fdc693d4253",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-cf3d-0fdc693d4253",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T03:25:24Z"
+        }
+      ],
+      "summary": "Total score [HARK]: 0.0 {score}",
+      "type": "OBSERVATION"
+    },
+    {
+      "date": "2025-04-18T02:50:48+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-8e48-97df4a85e53e",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-8e48-97df4a85e53e",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T02:50:48Z"
+        }
+      ],
+      "summary": "Protocol for Responding to and Assessing Patients' Assets, Risks, and Experiences [PRAPARE] observation recorded",
+      "type": "OBSERVATION"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-171d-4bed31e6255b",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-171d-4bed31e6255b",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Creatinine [Mass/volume] in Blood: 0.84 mg/dL",
+      "type": "LAB"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-e07b-680554747d1d",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-e07b-680554747d1d",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Glucose [Mass/volume] in Blood: 83.61 mg/dL",
+      "type": "LAB"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-738a-1b98561ee983",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-738a-1b98561ee983",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Hemoglobin A1c/Hemoglobin.total in Blood: 5.93 %",
+      "type": "LAB"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-4de5-6a95cf7a793f",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-4de5-6a95cf7a793f",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Potassium [Moles/volume] in Blood: 5.08 mmol/L",
+      "type": "LAB"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-5055-651633f48def",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-5055-651633f48def",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Sodium [Moles/volume] in Blood: 142.52 mmol/L",
+      "type": "LAB"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-f31b-68f85a88364a",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-f31b-68f85a88364a",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Urea nitrogen [Mass/volume] in Blood: 16.6 mg/dL",
+      "type": "LAB"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-9747-d66044f781de",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-9747-d66044f781de",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Tobacco smoking status observation recorded",
+      "type": "OBSERVATION"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-9e43-70896b0dfca6",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-9e43-70896b0dfca6",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Blood pressure panel with all children optional observation recorded",
+      "type": "VITAL"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-9dd7-30c62c3c2e26",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-9dd7-30c62c3c2e26",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Body Height: 163.0 cm",
+      "type": "VITAL"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-ce71-4dcc813ff429",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-ce71-4dcc813ff429",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Body Weight: 80.9 kg",
+      "type": "VITAL"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-9766-b5a840e87d76",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-9766-b5a840e87d76",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Body mass index (BMI) [Ratio]: 30.45 kg/m2",
+      "type": "VITAL"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-7ea1-1fc56047389e",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-7ea1-1fc56047389e",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Heart rate: 68.0 /min",
+      "type": "VITAL"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-4bf4-a1614e948dac",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-4bf4-a1614e948dac",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Pain severity - 0-10 verbal numeric rating [Score] - Reported: 2.0 {score}",
+      "type": "VITAL"
+    },
+    {
+      "date": "2025-04-18T01:52:09+00:00",
+      "evidence": [
+        {
+          "doc_id": "Observation/f4159279-94bf-1bfc-f1c7-a6ddd0e760fd",
+          "file_path": "data/raw/fhir_ehr_synthea/samples_100/Berna338_Moore224_f4159279-94bf-1bfc-701b-502b2a3131b4.json",
+          "resource_id": "f4159279-94bf-1bfc-f1c7-a6ddd0e760fd",
+          "resource_type": "Observation",
+          "timestamp": "2025-04-18T01:52:09Z"
+        }
+      ],
+      "summary": "Respiratory rate: 15.0 /min",
+      "type": "VITAL"
+    }
+  ]
+}

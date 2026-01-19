@@ -109,9 +109,19 @@ def _json_lines(payload: dict) -> list[str]:
     return json.dumps(payload, indent=2, sort_keys=True).splitlines()
 
 
-def compare_json(expected: dict, actual: dict, *, max_lines: int = 200) -> tuple[bool, str]:
+def compare_json(
+    expected: dict,
+    actual: dict,
+    *,
+    fixture_name: str,
+    max_lines: int = 200,
+) -> tuple[bool, str]:
     if expected == actual:
         return True, ""
+    out_dir = Path("tests/golden/_out")
+    ensure_dir(out_dir)
+    actual_path = out_dir / f"actual_{fixture_name}.json"
+    write_json_pretty(actual_path, actual)
     diff_iter: Iterable[str] = difflib.unified_diff(
         _json_lines(expected),
         _json_lines(actual),
@@ -122,7 +132,12 @@ def compare_json(expected: dict, actual: dict, *, max_lines: int = 200) -> tuple
     diff_lines = list(diff_iter)
     if len(diff_lines) > max_lines:
         diff_lines = diff_lines[:max_lines] + ["... diff truncated ..."]
-    return False, "\n".join(diff_lines)
+    message = (
+        "Golden output mismatch. "
+        f"Wrote actual output to {actual_path}.\n"
+        + "\n".join(diff_lines)
+    )
+    return False, message
 
 
 def write_golden_files(cases: list[tuple[Path, Path]]) -> None:
