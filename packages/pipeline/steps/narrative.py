@@ -1,12 +1,11 @@
 from __future__ import annotations
 
 import json
-import os
 import re
 import sys
 from typing import Optional
 
-from packages.core.llm import LLMClient
+from packages.core.llm import LLMClient, ensure_openai_api_key
 from packages.core.schemas.output import NarrativeSummary
 
 
@@ -117,28 +116,76 @@ def _llm_prompt(snapshot_text: str) -> str:
     )
 
 
+def _print_llm_debug(
+    key_present: bool, attempted_call: bool, exc: Optional[BaseException] = None
+) -> None:
+    print(
+        f"LLM debug: key_present={key_present} attempted_call={attempted_call}",
+        file=sys.stderr,
+    )
+    if exc is None:
+        return
+    status = getattr(exc, "status_code", None)
+    status_suffix = f" status={status}" if status is not None else ""
+    print(
+        f"LLM debug error: {type(exc).__name__}: {exc}{status_suffix}",
+        file=sys.stderr,
+    )
+
+
 def generate_narrative(
-    snapshot_text: str, patient_id: str, llm: Optional[LLMClient]
-) -> NarrativeSummary:
-    if llm is None or not llm.is_available() or not os.getenv("OPENAI_API_KEY"):
+    snapshot_text: str,
+    patient_id: str,
+    llm: Optional[LLMClient],
+    *,
+    require_llm: bool = False,
+    llm_debug: bool = False,
+) -> Optional[NarrativeSummary]:
+    if llm is None:
+        return _mock_narrative(snapshot_text, patient_id)
+
+    key_present = ensure_openai_api_key()
+    attempted_call = False
+    if not key_present:
+        if llm_debug:
+            _print_llm_debug(key_present, attempted_call)
+        if require_llm:
+            raise RuntimeError("OPENAI_API_KEY not set (env or .env)")
         return _mock_narrative(snapshot_text, patient_id)
 
     prompt = _llm_prompt(snapshot_text)
     try:
+        attempted_call = True
         response = llm.complete(prompt)
-    except RuntimeError as exc:
-        print(f"LLM exception: {type(exc).__name__}: {exc}", file=sys.stderr)
-        raise
+    except Exception as exc:
+        if llm_debug:
+            _print_llm_debug(key_present, attempted_call, exc)
+        if require_llm:
+            raise RuntimeError(
+                f"LLM request failed: {type(exc).__name__}: {exc}"
+            ) from exc
+        return _mock_narrative(snapshot_text, patient_id)
+
+    if not response:
+        if llm_debug:
+            _print_llm_debug(key_present, attempted_call)
+        if require_llm:
+            raise RuntimeError("LLM returned empty narrative")
+        return _mock_narrative(snapshot_text, patient_id)
 
     try:
         payload = json.loads(response)
         narrative = NarrativeSummary(**payload)
     except Exception as exc:
-        preview = response[:800]
-        raise RuntimeError(
-            "LLM returned non-JSON output: "
-            f"{type(exc).__name__}: {exc}. raw_output_preview={preview!r}"
-        ) from exc
+        if llm_debug:
+            _print_llm_debug(key_present, attempted_call, exc)
+        if require_llm:
+            preview = response[:800]
+            raise RuntimeError(
+                "LLM returned non-JSON output: "
+                f"{type(exc).__name__}: {exc}. raw_output_preview={preview!r}"
+            ) from exc
+        return _mock_narrative(snapshot_text, patient_id)
 
     bullet_ids = set(
         re.findall(
@@ -151,10 +198,15 @@ def generate_narrative(
     followup_tags = re.findall(r"\[[^\]]+\]", "\n".join(narrative.followup_questions))
     if followup_tags:
         preview = response[:800]
-        raise RuntimeError(
+        error = RuntimeError(
             "LLM citation validation failed: followups must not include citation tags. "
             f"found_tags={followup_tags} raw_output_preview={preview!r}"
         )
+        if llm_debug:
+            _print_llm_debug(key_present, attempted_call, error)
+        if require_llm:
+            raise error
+        return _mock_narrative(snapshot_text, patient_id)
 
     invalid_citations: dict[str, list[str]] = {}
     for key, values in narrative.citations.items():
@@ -167,10 +219,17 @@ def generate_narrative(
 
     if missing_ids or invalid_citations:
         preview = response[:800]
-        raise RuntimeError(
+        error = RuntimeError(
             "LLM citation validation failed: "
             f"missing_ids={missing_ids} invalid_citations={invalid_citations} "
             f"raw_output_preview={preview!r}"
         )
+        if llm_debug:
+            _print_llm_debug(key_present, attempted_call, error)
+        if require_llm:
+            raise error
+        return _mock_narrative(snapshot_text, patient_id)
 
+    if llm_debug:
+        _print_llm_debug(key_present, attempted_call)
     return narrative

@@ -31,7 +31,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterable
 
-from packages.core.llm import LLMClient
+from packages.core.llm import LLMClient, load_dotenv
 from packages.core.schemas.result import PatientAnalysisResult
 from packages.ingest.synthea.loader import load_patient_dir
 from packages.ingest.synthea.normalizer import normalize_to_patient_chart
@@ -930,11 +930,8 @@ def _detect_llm_keys() -> tuple[bool, str]:
 
 
 def _load_env_if_available() -> None:
-    try:
-        from dotenv import load_dotenv
-    except Exception:
-        return
-    load_dotenv(REPO_ROOT / ".env")
+    if os.getenv("EVAL_LOAD_DOTENV") == "1":
+        load_dotenv(REPO_ROOT / ".env")
 
 
 def _run_llm_with_timeout(

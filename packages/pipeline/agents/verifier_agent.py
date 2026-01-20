@@ -26,15 +26,17 @@ def verify_result(result: PatientAnalysisResult) -> PatientAnalysisResult:
     if narrative is not None:
         try:
             citations = narrative.citations or {}
-            invalid = False
+            has_valid = False
+            has_any = False
             for values in citations.values():
                 for cite in values or []:
-                    if cite not in valid_doc_ids:
-                        invalid = True
+                    has_any = True
+                    if cite in valid_doc_ids:
+                        has_valid = True
                         break
-                if invalid:
+                if has_valid:
                     break
-            if invalid:
+            if has_any and not has_valid:
                 result.narrative = None
         except Exception:
             result.narrative = None

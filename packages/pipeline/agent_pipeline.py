@@ -50,6 +50,8 @@ def run_agent_pipeline(
     mode: Literal["mock", "llm"] = "mock",
     enable_agents: bool = False,
     llm_client: Optional[LLMClient] = None,
+    llm_debug: bool = False,
+    require_llm: bool = False,
 ) -> PatientAnalysisResult:
     path_obj = Path(path)
     resources = load_patient_dir(path_obj)
@@ -59,7 +61,13 @@ def run_agent_pipeline(
     risks = run_risk_rules(chart)
     enrich_evidence(risks, chart, str(path_obj))
     llm = llm_client or (LLMClient() if mode == "llm" else None)
-    narrative = generate_narrative(snapshot_text, chart.patient_id, llm)
+    narrative = generate_narrative(
+        snapshot_text,
+        chart.patient_id,
+        llm,
+        require_llm=require_llm,
+        llm_debug=llm_debug,
+    )
 
     timeline = None
     missing_info = None

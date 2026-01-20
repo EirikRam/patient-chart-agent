@@ -70,6 +70,12 @@ def main() -> int:
     parser.add_argument("--out", type=Path, help="Output path for markdown report.")
     parser.add_argument("--json", action="store_true", help="Emit JSON output.")
     parser.add_argument("--phase5", action="store_true", help="Enable phase 5 agents.")
+    parser.add_argument("--llm-debug", action="store_true", help="Emit LLM diagnostics.")
+    parser.add_argument(
+        "--require-llm",
+        action="store_true",
+        help="Fail if LLM narrative is unavailable.",
+    )
     args = parser.parse_args()
 
     path = _normalize_patient_path(args.path)
@@ -80,8 +86,22 @@ def main() -> int:
         print("Error: --out is required when --format md is used.", file=sys.stderr)
         return 2
 
+    if args.require_llm and args.mode != "llm":
+        print("Error: --require-llm requires --mode llm.", file=sys.stderr)
+        return 2
+
+    if args.require_llm and not args.phase5:
+        print("Error: --require-llm requires --phase5 to generate a narrative.", file=sys.stderr)
+        return 2
+
     if args.phase5:
-        result = run_agent_pipeline(path, enable_agents=True, mode=args.mode)
+        result = run_agent_pipeline(
+            path,
+            enable_agents=True,
+            mode=args.mode,
+            llm_debug=args.llm_debug,
+            require_llm=args.require_llm,
+        )
         resources = load_patient_dir(path)
         grouped = parse_fhir_resources(resources)
         chart = normalize_to_patient_chart(grouped)

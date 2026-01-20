@@ -5,11 +5,7 @@ Mode: llm
 ## Snapshot
 Patient: 0c1a1859-29c7-4f11-f21c-20a7099e8613 | sex=female | age=28 | last_seen=2025-12-01
 Recent problems:
-2025-12-01 | Medication review due (situation)
-2025-12-01 | Medication review due (situation)
-2025-11-29 | Medication review due (situation)
-2025-11-29 | Medication review due (situation)
-2025-11-27 | Medication review due (situation)
+- Medication review due (situation) (most recent: 2025-12-01)
 Medications:
 2025-12-01 | Hydrochlorothiazide 25 MG Oral Tablet
 2025-12-01 | 24 HR tacrolimus 1 MG Extended Release Oral Tablet [Envarsus]
@@ -33,6 +29,11 @@ vitals_bmi_obesity | medium | BMI in obesity range: 32.21 on 2025-12-01
 vitals_bp_elevated | medium | elevated BP: 122/92 on 2025-12-01
   - src: Observation/fb62c08e-8900-5fb2-ac0c-6cd416a0be90
 
+Key risks:
+- A1c in prediabetes range: 5.96 % on 2025-11-29
+- BMI in obesity range: 32.21 on 2025-12-01
+- elevated BP: 122/92 on 2025-12-01
+
 ## Top Risks
 | Severity | Rule | Message |
 | --- | --- | --- |
@@ -41,20 +42,64 @@ vitals_bp_elevated | medium | elevated BP: 122/92 on 2025-12-01
 | medium | vitals_bp_elevated | elevated BP: 122/92 on 2025-12-01 |
 
 ## Timeline
-No structured timeline available.
+- 2025-12-01T12:17:21+00:00 — Respiratory rate: 13.0 /min
+- 2025-12-01T12:17:21+00:00 — Pain severity - 0-10 verbal numeric rating [Score] - Reported: 1.0 {score}
+- 2025-12-01T12:17:21+00:00 — Heart rate: 83.0 /min
+- 2025-12-01T12:17:21+00:00 — Body mass index (BMI) [Ratio]: 32.21 kg/m2
+- 2025-12-01T12:17:21+00:00 — Body Weight: 107.4 kg
+- 2025-12-01T12:17:21+00:00 — Body Height: 182.6 cm
+- 2025-12-01T12:17:21+00:00 — Blood pressure panel with all children optional observation recorded
+- 2025-12-01T12:17:21+00:00 — Tobacco smoking status observation recorded
+- 2025-12-01T12:17:21+00:00 — pH of Urine by Test strip: 5.944 pH
+- 2025-12-01T12:17:21+00:00 — Urea nitrogen [Mass/volume] in Serum or Plasma: 8.55 mg/dL
+- 2025-12-01T12:17:21+00:00 — Specific gravity of Urine by Test strip: 1.0171 {nominal}
+- 2025-12-01T12:17:21+00:00 — Sodium [Moles/volume] in Serum or Plasma: 137.06 mmol/L
+- 2025-12-01T12:17:21+00:00 — Protein [Presence] in Urine by Test strip observation recorded
+- 2025-12-01T12:17:21+00:00 — Protein [Mass/volume] in Urine by Test strip: 229.68 mg/dL
+- 2025-12-01T12:17:21+00:00 — Potassium [Moles/volume] in Serum or Plasma: 5.04 mmol/L
+- 2025-12-01T12:17:21+00:00 — Odor of Urine observation recorded
+- 2025-12-01T12:17:21+00:00 — Nitrite [Presence] in Urine by Test strip observation recorded
+- 2025-12-01T12:17:21+00:00 — Leukocyte esterase [Presence] in Urine by Test strip observation recorded
+- 2025-12-01T12:17:21+00:00 — Ketones [Presence] in Urine by Test strip observation recorded
+- 2025-12-01T12:17:21+00:00 — Ketones [Mass/volume] in Urine by Test strip: 15.026 mg/dL
 
 ## Missing Information / Contradictions
-No missing or contradictory information detected.
+- Contradiction (low): The condition 'Only received primary school education (finding)' appears multiple times in the record with conflicting onset dates.
 
 ## LLM Clinical Narrative (Excerpt)
-Narrative not generated.
+The patient is a 28-year-old female last seen on 2025-12-01.
+[S1] Current medications include Hydrochlorothiazide, Tacrolimus, and Amlodipine as of 2025-12-01.
+[S2] Blood pressure recorded as 122/92 on 2025-12-01.
+[S3] BMI is 32.21 kg/m2, indicating obesity, as of 2025-12-01.
+[S4] A1c level is 5.96%, indicating prediabetes, as of 2025-11-29.
+(Full narrative available in artifact.)
 
 ## Citations
 <details>
 <summary>Evidence & Citations</summary>
 
+- resource_type: Condition; resource_id: 0bdb38c0-fe9f-f2dd-288a-8176e1b271e0; timestamp: unknown; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Condition; resource_id: f5f7ffea-7532-6a7d-fd12-6587041d4b2e; timestamp: unknown; file_path: data\raw\fhir_ehr_synthea\samples_100
 - resource_type: Observation; resource_id: 45dff467-def6-2132-28ab-3d6da2bec3ed; timestamp: 2025-11-29T07:21:42+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-0874-52bd6e5f2b17; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-0c97-871229fda65f; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-1b34-c6dea1c66f7d; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
 - resource_type: Observation; resource_id: fb62c08e-8900-5fb2-23d1-b59256a4f06f; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-286f-0e1e026302fe; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-35e4-9e93a46e2f70; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-3615-e91324307f63; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-3d81-58d34dbdbc54; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-512a-b7545abf1d5e; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-73f2-9a437d7b24cc; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-7753-fb749ff8acd8; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-8568-8082e822c794; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-9e2c-e77ff23cdd03; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
 - resource_type: Observation; resource_id: fb62c08e-8900-5fb2-ac0c-6cd416a0be90; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-adf7-0ce43a57a500; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-c66d-0ce7be0dad07; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-ca80-2636b0836fc8; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-ce01-94011beb153a; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-dfce-fa8029cd2a73; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
+- resource_type: Observation; resource_id: fb62c08e-8900-5fb2-ea69-8c583bde679e; timestamp: 2025-12-01T12:17:21+00:00; file_path: data\raw\fhir_ehr_synthea\samples_100
 
 </details>
