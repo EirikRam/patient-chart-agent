@@ -4,6 +4,7 @@ import argparse
 import sys
 from pathlib import Path
 
+from packages.core.render.markdown import render_patient_report_md
 from packages.core.schemas.result import PatientAnalysisResult
 from packages.ingest.synthea.loader import load_patient_dir
 from packages.ingest.synthea.normalizer import normalize_to_patient_chart
@@ -40,54 +41,57 @@ def _serialize_risks(risks: list[dict]) -> list[dict]:
     return serialized
 
 
-def _source_fields(source: object) -> tuple[object, object]:
-    if isinstance(source, dict):
-        return source.get("resource_type"), source.get("resource_id")
-    return getattr(source, "resource_type", None), getattr(source, "resource_id", None)
-
-
 def _result_to_json(result: PatientAnalysisResult) -> str:
     if hasattr(result, "model_dump_json"):
         return result.model_dump_json()
     return result.json()
 
 
+def _write_markdown_report(path: Path, result: PatientAnalysisResult) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(render_patient_report_md(result), encoding="utf-8")
+
+
+def _normalize_patient_path(path: Path) -> Path:
+    if path.exists() and path.is_file():
+        return path.parent
+    if not path.exists():
+        raise FileNotFoundError(
+            f"Patient path not found: {path}. Expected a directory or a patient JSON file."
+        )
+    return path
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Run risk analysis.")
     parser.add_argument("path", type=Path, help="Path to patient JSON bundle.")
     parser.add_argument("--mode", choices=["mock", "llm"], default="mock")
+    parser.add_argument("--format", choices=["json", "md"], default="json")
+    parser.add_argument("--out", type=Path, help="Output path for markdown report.")
     parser.add_argument("--json", action="store_true", help="Emit JSON output.")
     parser.add_argument("--phase5", action="store_true", help="Enable phase 5 agents.")
     args = parser.parse_args()
 
-    path = args.path
+    path = _normalize_patient_path(args.path)
+    output_format = args.format
+    if args.json:
+        output_format = "json"
+    if output_format == "md" and args.out is None:
+        print("Error: --out is required when --format md is used.", file=sys.stderr)
+        return 2
+
     if args.phase5:
         result = run_agent_pipeline(path, enable_agents=True, mode=args.mode)
         resources = load_patient_dir(path)
         grouped = parse_fhir_resources(resources)
         chart = normalize_to_patient_chart(grouped)
         enrich_result_evidence(result, chart, str(path))
-        if args.json:
+        if output_format == "json":
             print(_result_to_json(result))
             return 0
-
-        patient_id = result.meta.get("patient_id", "unknown")
-        risks = result.risks or []
-        print(f"patient_id: {patient_id}")
-        print(f"total risks found: {len(risks)}")
-        if not risks:
-            return 0
-        for risk in risks:
-            rule_id = risk.get("rule_id", "unknown")
-            severity = risk.get("severity", "medium")
-            message = risk.get("message", "")
-            print(f"{rule_id} | {severity} | {message}")
-            evidence = risk.get("evidence") or []
-            for source in evidence[:5]:
-                resource_type, resource_id = _source_fields(source)
-                resource_type = resource_type or "unknown"
-                resource_id = resource_id or "unknown"
-                print(f"  - src: {resource_type}/{resource_id}")
+        if output_format == "md":
+            _write_markdown_report(args.out, result)
+            print(f"Markdown report written to {args.out}")
         return 0
 
     resources = load_patient_dir(path)
@@ -95,33 +99,20 @@ def main() -> int:
     chart = normalize_to_patient_chart(grouped)
 
     risks = run_risk_rules(chart)
-    if args.json:
-        enrich_evidence(risks, chart, str(path))
-        snapshot_text = build_snapshot_from_chart(chart)
-        result = PatientAnalysisResult(
-            snapshot=snapshot_text,
-            risks=_serialize_risks(risks),
-            narrative=None,
-            meta={"patient_id": chart.patient_id, "source_path": str(path), "mode": args.mode},
-        )
+    enrich_evidence(risks, chart, str(path))
+    snapshot_text = build_snapshot_from_chart(chart)
+    result = PatientAnalysisResult(
+        snapshot=snapshot_text,
+        risks=_serialize_risks(risks),
+        narrative=None,
+        meta={"patient_id": chart.patient_id, "source_path": str(path), "mode": args.mode},
+    )
+    if output_format == "json":
         print(_result_to_json(result))
         return 0
-
-    print(f"patient_id: {chart.patient_id}")
-    print(f"total risks found: {len(risks)}")
-    if not risks:
-        return 0
-    for risk in risks:
-        rule_id = risk.get("rule_id", "unknown")
-        severity = risk.get("severity", "medium")
-        message = risk.get("message", "")
-        print(f"{rule_id} | {severity} | {message}")
-        evidence = risk.get("evidence") or []
-        for source in evidence[:5]:
-            resource_type, resource_id = _source_fields(source)
-            resource_type = resource_type or "unknown"
-            resource_id = resource_id or "unknown"
-            print(f"  - src: {resource_type}/{resource_id}")
+    if output_format == "md":
+        _write_markdown_report(args.out, result)
+        print(f"Markdown report written to {args.out}")
 
     return 0
 

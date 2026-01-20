@@ -19,5 +19,4 @@ build/
 Thumbs.db
 
 # datasets
-data/raw/
 data/processed/
