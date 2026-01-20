@@ -1,13 +1,22 @@
-# patient-chart-agent
+# Clinical Chart Intelligence System
 
-Agentic system for summarizing patient charts from synthetic EHR/FHIR data.  
+Multi-Agent system for summarizing patient charts from synthetic EHR/FHIR data.  
 Ingests clinical notes, labs, medications, and vitals to produce clinician-style summaries, event timelines, risk flags, and missing-information checks with source-level citations. Designed for faithfulness, auditability, and safe clinical decision support.
+
+---
+
+## Patient Summary Preview 
+
+*Example clinician-style summaries generated from synthetic EHR data*
+
+![Patient Summary Preview](docs/images/Sample0.png)
+![Patient Summary Preview](docs/images/Sample1.png)
 
 ---
 
 ## Overview
 
-**patient-chart-agent** is a multi-agent clinical intelligence system that analyzes structured electronic health record (EHR) data and produces a faithful, traceable, clinician-style chart review.
+**Clinical Chart Intelligence System** is a multi-agent clinical intelligence system that analyzes structured electronic health record (EHR) data and produces a faithful, traceable, clinician-style chart review.
 
 The system is designed to answer a practical clinical question:
 
@@ -79,6 +88,18 @@ The system produces a single consolidated analysis containing:
 ## Agentic Architecture
 
 This project is intentionally designed as a **multi-agent system**, with each agent responsible for a narrow, well-defined task.
+
+---
+
+## System Architecture Diagram
+
+> **Architecture / Agent Wiring Diagram**  
+>  
+> This diagram illustrates the end-to-end flow of the Patient-Chart-Agent system, from FHIR ingestion through multi-agent analysis, verification, and final report generation.
+> 
+> Each agent operates with a narrow, auditable responsibility. Deterministic agents produce structured clinical facts, while the optional LLM layer is constrained to verified snapshot data and gated by citation validation before output is released.
+
+![Patient Chart Agent Architecture](docs/images/patient-chart-agent.png)
 
 ### Implemented Agents
 
@@ -155,9 +176,8 @@ The following is an example report generated from a synthetic EHR bundle.
 
 ### Sample Output (LLM Mode)
 
-![Patient Analysis Report Demo](docs/images/report_demo.png)
-<img width="807" height="847" alt="LLM Sample Screenshot" src="https://github.com/user-attachments/assets/2e93acb1-e9bb-48dd-b0fb-1813b1574da1" />
-
+![Patient Analysis Report Demo](docs/images/Patientdemo0.png)
+![Patient Analysis Report Demo](docs/images/Patientdemo1.png)
 
 **Excerpt:**
 > Female, age 28, with obesity-range BMI (32.21) and elevated blood pressure (122/92).  
@@ -167,18 +187,6 @@ The following is an example report generated from a synthetic EHR bundle.
 Full reports:
 - 📄 [`Berna338_llm.md`](artifacts/reports/Berna338_llm.md) — LLM-assisted mode
 - 📄 [`Berna338.md`](artifacts/reports/Berna338.md) — deterministic mock mode
-
----
-
-## System Architecture Diagram
-
-> **Architecture / Agent Wiring Diagram (Coming Next)**  
->  
-> A professional system diagram will be added to illustrate:
-> - Agent boundaries
-> - Data flow between ingestion, analysis, and verification
-> - RAG retrieval paths
-> - CLI and API entry points
 
 ---
 
