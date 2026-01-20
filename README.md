@@ -156,6 +156,8 @@ The following is an example report generated from a synthetic EHR bundle.
 ### Sample Output (LLM Mode)
 
 ![Patient Analysis Report Demo](docs/images/report_demo.png)
+<img width="807" height="847" alt="LLM Sample Screenshot" src="https://github.com/user-attachments/assets/2e93acb1-e9bb-48dd-b0fb-1813b1574da1" />
+
 
 **Excerpt:**
 > Female, age 28, with obesity-range BMI (32.21) and elevated blood pressure (122/92).  
