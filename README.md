@@ -9,7 +9,7 @@ Ingests clinical notes, labs, medications, and vitals to produce clinician-style
 
 *Example clinician-style summaries generated from synthetic EHR data*
 
-![Patient Summary Preview](docs/images/Sample0.png)
+![Patient Summary Preview](docs/images/PatientSummaryUXSample.png)
 ![Patient Summary Preview](docs/images/Sample1.png)
 
 ---
@@ -176,8 +176,8 @@ The following is an example report generated from a synthetic EHR bundle.
 
 ### Sample Output (LLM Mode)
 
-![Patient Analysis Report Demo](docs/images/Patientdemo0.png)
-![Patient Analysis Report Demo](docs/images/Patientdemo1.png)
+![Patient Analysis Report Demo](docs/images/Sample0.png)
+![Patient Analysis Report Demo](docs/images/Sample1.png)
 
 **Excerpt:**
 > Female, age 28, with obesity-range BMI (32.21) and elevated blood pressure (122/92).  
