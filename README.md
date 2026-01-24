@@ -7,10 +7,9 @@ Ingests clinical notes, labs, medications, and vitals to produce clinician-style
 
 ## Patient Summary Preview 
 
-*Example clinician-style summaries generated from synthetic EHR data*
+*Example UX clinician-style summaries generated from synthetic EHR data*
 
 ![Patient Summary Preview](docs/images/PatientSummaryUXSample.png)
-![Patient Summary Preview](docs/images/Sample1.png)
 
 ---
 
